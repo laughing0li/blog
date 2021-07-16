@@ -1,0 +1,38 @@
+<!-- 表示该文件继承自base.html文件 -->
+{% extends "base.html" %}
+<!-- load static载入静态文件 -->
+{% load static %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-2">
+
+        {% for article in articles %}
+        <div class="col-4 mb-4">
+            <div class="card h-100">
+                <h4 class="card-header">{{ article.title }}</h4>
+                <div class="card-body">
+                    <!-- slice:'100'表示只取前一百个字符 -->
+                    <p class="card-text">{{ article.body|slice:'100' }}...</p>
+                </div>
+                <div class="card-footer">
+                    <!-- 
+                        1. 下面的href的用法，首先会将article.id传递给article/urls.py文件
+                        2. 在article/urls.py文件中，通过<int:id> 将id传递给视图函数article_detail()
+                        3. 在视图函数中，通过id 获取到对应的文章，并且在这里进行显示
+                    -->
+                    <a href="{% url 'article:article_detail' article.id %}" class="btn btn-primary">View Detail</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock content %}
