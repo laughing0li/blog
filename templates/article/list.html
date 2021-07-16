@@ -26,7 +26,7 @@ Home
                         2. 在article/urls.py文件中，通过<int:id> 将id传递给视图函数article_detail()
                         3. 在视图函数中，通过id 获取到对应的文章，并且在这里进行显示
                     -->
-                    <a href="{% url 'article:article_detail' article.id %}" class="btn btn-primary">View Detail</a>
+                    <a href="{% url 'article:article_detail' article.id %}" class="btn btn-outline-secondary">View Detail</a>
                 </div>
             </div>
         </div>

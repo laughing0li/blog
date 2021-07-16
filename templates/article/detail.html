@@ -20,8 +20,63 @@ Detail
                 表示这一段字符不需要进行转义了。 -->
             <p>{{ article.body|safe }}</p>
         </div>
-        <a href='{% url "article:article_delete" article.id %}'>删除文章</a>
+
+
+        <button type="button" class="btn btn-outline-secondary" onclick="update()">
+            Update Blog
+        </button>
+
+        <!-- Button trigger delete modal -->
+        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bd-example-modal-sm">
+            Delete Blog
+        </button>
+
+        <!-- 一个隐藏的form，用于提交带csrf令牌的删除 -->
+        <form 
+            id="safe_delete"
+            action="{% url 'article:article_safe_delete' article.id %}"
+            style="display: none;"
+            method="POST"
+        >
+            <!-- 用于携带csrf令牌，这是由Django中间件帮忙处理的 -->
+            {% csrf_token %}
+            <button type="submit">Submit</button>
+    </form>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you want to delete it!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="confirm_safe_delete()" class="btn btn-outline-danger">Confirm</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
+<script>
+    // 安全删除文章的函数
+    // 工作流程，在点击Confirm进行删除的时候，并没有第一时间进行删除，而是调用了隐藏的form
+    // 在隐藏的form里面添加了csrf令牌的信息，然后再提交到了article_safe_delete视图进行操作
+    function confirm_safe_delete() {
+        $('form#safe_delete button').click();
+    }
+    // 用于点击更新按钮，跳转到更新页面
+    function update() {
+        location.href = '{% url "article:article_update" article.id %}'
+    }
+</script>
 {% endblock content %}

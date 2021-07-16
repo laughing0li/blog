@@ -66,10 +66,37 @@ def article_create(request):
         context = { 'article_post_form' : article_post_form }
         return render(request, 'article/create.html', context)
 
-# 根据id删除对应的博客
-def article_delete(request, id):
+# 理由csrf的方式安全删除对应的博客
+def article_safe_delete(request, id):
+    if request.method == 'POST':
+        article = ArticlePost.objects.get(id=id)
+        article.delete()
+        return redirect('article:article_list')
+    else:
+        return HttpResponse('Only Allow POST request')
+    
+
+# 
+def article_update(request, id):
     article = ArticlePost.objects.get(id=id)
+    # 先判断，进来这个视图的请求是否是POST
+    if request.method == 'POST':
+        # 将提交的数据赋值到表单实例中
+        article_post_form = ArticlePostForm(data = request.POST)
+        # 将数据更新，然后存储
+        if article_post_form.is_valid():
+            article.title = request.POST['title']
+            article.body = request.POST['body']
+            article.save()
+            # 返回到对应id的博客详情
+            return redirect('article:article_detail', id=id)
+        else:
+            return HttpResponse('Invalid Input, Please try again')
+    else:
+        # 将需要修改的博客渲染到页面
+        article_post_form = ArticlePostForm()
+        context = { 'article':article, 'article_post_form': article_post_form }
+        return render(request, 'article/update.html', context)
 
-    article.delete()
 
-    return redirect("article:article_list")
+    
