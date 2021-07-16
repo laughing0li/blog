@@ -14,8 +14,8 @@ urlpatterns = [
     # 新建博客页面
     path('article-create/', views.article_create, name='article_create'),
     # 安全删除博客，带有csrf令牌信息
-    path('article-safe-delete/<int:id>', views.article_safe_delete, name='article_safe_delete'),
+    path('article-safe-delete/<int:id>/', views.article_safe_delete, name='article_safe_delete'),
     # 更新博客
-    path('article-update/<int:id>', views.article_update, name='article_update')
+    path('article-update/<int:id>/', views.article_update, name='article_update')
 
 ]
