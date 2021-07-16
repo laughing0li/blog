@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 注册新增的article这个App
+    'userprofile',
     'article',
     'django.contrib.admin',
     'django.contrib.auth',

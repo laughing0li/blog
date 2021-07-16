@@ -25,5 +25,6 @@ urlpatterns = [
     # namespace不一样，所以也能工作
     # path('article/', include('article.urls', namespace='article')),
     path('article/', include('article.urls', namespace='article')),
+    path('user/', include('userprofile.urls', namespace='userprofile'))
 
 ]
